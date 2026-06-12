@@ -1,0 +1,41 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Redirecionar todos os links e botões para o Google
+    const allLinks = document.querySelectorAll('a, button, .clickable');
+    
+    allLinks.forEach(element => {
+        element.addEventListener('click', (e) => {
+            // Se for um link para as páginas legais ou âncoras internas, permite a navegação normal
+            const href = element.getAttribute('href');
+            if (href) {
+                if (href.startsWith('#') || href.includes('privacy.html') || href.includes('terms.html') || href.includes('index.html')) {
+                    return;
+                }
+            }
+            
+            // Caso contrário, redireciona para o Google
+            e.preventDefault();
+            window.location.href = 'https://google.com';
+        });
+    });
+
+    // Smooth scroll para âncoras internas
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const target = document.querySelector(targetId);
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
